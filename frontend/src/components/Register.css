@@ -1,4 +1,4 @@
-/* Centering the form container */
+
 .register-container {
     max-width: 400px;
     margin: 100px auto;
@@ -7,7 +7,6 @@
     background-color: #ffffff;
   }
   
-  /* Heading styling */
   .register-heading {
     font-size: 24px;
     font-weight: bold;
@@ -15,7 +14,6 @@
     color: #333333;
   }
   
-  /* Input fields */
   .register-input {
     width: 100%;
     padding: 12px 10px;
@@ -26,11 +24,10 @@
     box-sizing: border-box;
   }
   
-  /* Register Button */
   .register-button {
     width: 100%;
     padding: 12px;
-    background-color: #7a45f5; /* Purple color */
+    background-color: #7a45f5; 
     color: #ffffff;
     border: none;
     border-radius: 5px;

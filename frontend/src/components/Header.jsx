@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Header.css'; // Import CSS file
+import './Header.css'; 
 
 const Header = () => {
   const token = localStorage.getItem("token");

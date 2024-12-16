@@ -1,4 +1,4 @@
-/* Header container */
+
 .header {
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
@@ -9,7 +9,6 @@
     font-family: Arial, sans-serif;
   }
   
-  /* Navigation container */
   .nav-container {
     display: flex;
     justify-content: space-between;
@@ -17,7 +16,6 @@
     align-items: center;
   }
   
-  /* Navigation links */
   .nav {
     display: flex;
     gap: 20px;
@@ -34,13 +32,13 @@
   }
   
   .task-list {
-    color: #7a45f5; /* Purple color */
+    color: #7a45f5; 
     font-weight: normal;
   }
   
-  /* Signout button */
+
   .signout-btn {
-    background-color: #7a45f5; /* Purple color */
+    background-color: #7a45f5; 
     color: #ffffff;
     font-size: 14px;
     border: none;
@@ -50,6 +48,6 @@
   }
   
   .signout-btn:hover {
-    background-color: #6934d6; /* Slightly darker purple */
+    background-color: #6934d6; 
   }
   
