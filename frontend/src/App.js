@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard';
 import TaskList from './components/TaskList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -13,8 +14,8 @@ function App() {
     <Routes>
       <Route path = "/" element = {<Register/>}/>
       <Route path = "/login" element = {<Login/>}/>
-      <Route path = "/dashboard" element = {<Dashboard/>}/>
-      <Route path = "/tasklist" element = {<TaskList/>}/>
+      <Route path = "/dashboard" element = {<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
+      <Route path = "/tasklist" element = {<ProtectedRoute><TaskList/></ProtectedRoute>}/>
     </Routes>
     </>
   )
