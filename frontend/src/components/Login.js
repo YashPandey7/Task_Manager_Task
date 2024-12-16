@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../config";
+import {Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
 
-function Register() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,18 +14,21 @@ function Register() {
 
     const requestBody = {
       email,
-      password,
-      confirmPassword,
+      password
     };
 
     try {
-      const response = await axios.post(`${config.endpoint}/users/register`, requestBody);
-      console.log(response.data.message || "Registration successful!");
-      navigate("/login");
+      const response = await axios.post(`${config.endpoint}/users/login`, requestBody);
+      console.log(response.data.message || "Logged In successful!");
+      console.log(response.data.token);
+      
+      localStorage.setItem("email", email);
+      localStorage.setItem("token", response.data.token);
+      navigate("/dashboard");
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data.message || "Registration failed!");
-        alert(error.response.data.message || "Registration failed!");
+        console.log(error.response.data.message || "Login failed!");
+        alert(error.response.data.message || "Login failed!");
       } else {
         console.log("An error occurred: " + error.message);
         alert("An error occurred: " + error.message);
@@ -37,7 +39,8 @@ function Register() {
   return (
     <>
     <Header/>
-      <h1>Sign Up</h1>
+
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -53,18 +56,11 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}
           required
         /><br/><br/>
-        <input
-          type="password"
-          value={confirmPassword}
-          placeholder="Confirm Password..."
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        /><br/><br/>
-        <button type="submit">Register</button>
-        <p>Already have an account? <Link to="/login">Login</Link></p>
+        <button type="submit">Login</button>
+        <p>Don't have an account? <Link to="/">Register</Link></p>
       </form>
     </>
   );
 }
 
-export default Register;
+export default Login;
