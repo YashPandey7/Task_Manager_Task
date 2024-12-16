@@ -3,6 +3,8 @@ import Header from "./Header";
 import axios from "axios";
 import config from "../config";
 import TaskTable from "./TaskTable";
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function TaskList() {
   const [task, setTask] = useState({
@@ -12,6 +14,9 @@ function TaskList() {
     startTime: "",
     endTime: "",
   });
+  const [tasks, setTasks] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [currentTaskId, setCurrentTaskId] = useState(null);
   const token = localStorage.getItem("token");
 
   const handleChange = (e) => {
@@ -19,42 +24,53 @@ function TaskList() {
     setTask({ ...task, [name]: value });
   };
 
-  const getTask = async() => {
+  const getTasks = async () => {
     try {
       const res = await axios.get(`${config.endpoint}/tasks/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
+      setTasks(res.data);
     } catch (error) {
-      console.log("Error while fetching the data of Tasks: ", error);
+      console.log("Error fetching tasks:", error);
     }
-  
-  }
+  };
 
   useEffect(() => {
-    getTask();
-  }, [])
-
+    getTasks();
+  }, []);
 
   const saveTask = async (e) => {
     e.preventDefault();
-    console.log("Task saved:", task);
 
     try {
-      const response = await axios.post(`${config.endpoint}/tasks/`, task, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Task successfully saved:", response.data);
+      let response;
 
-      
-      const modalElement = document.getElementById('taskModal');
-      const modal = new window.bootstrap.Modal(modalElement);
-      modal.hide();
+      if (isEditMode) {
+        response = await axios.patch(`${config.endpoint}/tasks/${currentTaskId}`, task, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("Task successfully updated:", response.data);
+      } else {
+        response = await axios.post(`${config.endpoint}/tasks/`, task, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("Task successfully added:", response.data);
+      }
+
+      // const modalElement = document.getElementById("taskModal");
+      // const modal = new window.bootstrap.Modal(modalElement);
+      // modal.hide();
+      const modalElement = document.getElementById("taskModal");
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) modal.hide();
 
       setTask({
         title: "",
@@ -63,21 +79,49 @@ function TaskList() {
         startTime: "",
         endTime: "",
       });
+
+      getTasks(); // Refresh tasks
     } catch (error) {
-      console.error("Error saving task:", error);
+      console.error("Error saving/updating task:", error);
     }
+  };
+
+  const openEditModal = (task) => {
+    setIsEditMode(true);
+    setCurrentTaskId(task._id);
+    setTask({
+      title: task.title,
+      priority: task.priority,
+      status: task.status,
+      startTime: task.startTime,
+      endTime: task.endTime,
+    });
+
+    const modalElement = document.getElementById("taskModal");
+    const modal = new window.bootstrap.Modal(modalElement);
+    modal.show();
   };
 
   return (
     <>
       <Header />
       <h1>Task list</h1>
-      <br/>
+      <br />
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#taskModal"
+        onClick={() => {
+          setIsEditMode(false);
+          setTask({
+            title: "",
+            priority: 1,
+            status: "Pending",
+            startTime: "",
+            endTime: "",
+          });
+        }}
       >
         + Add task
       </button>
@@ -96,7 +140,7 @@ function TaskList() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="taskModalLabel">
-                  Add new task
+                  {isEditMode ? "Edit Task" : "Add new task"}
                 </h5>
                 <button
                   type="button"
@@ -181,21 +225,19 @@ function TaskList() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                >
-                  Add task
+                <button type="submit" className="btn btn-primary">
+                  {isEditMode ? "Save changes" : "Add task"}
                 </button>
               </div>
             </div>
           </div>
         </form>
       </div>
-      <br/><br/>
+      <br />
+      <br />
 
       <div>
-        <TaskTable/>
+        <TaskTable tasks={tasks} onEditTask={openEditModal} />
       </div>
     </>
   );
