@@ -39,7 +39,7 @@ const updateTask = async(req, res) => {
 
 const deleteTask = async(req, res) => {
     try{
-        const id = req.params;
+        const id = req.params.id;
         const result = await TaskService.deletes(id);
         res.status(200).json(result);
     }catch(err){

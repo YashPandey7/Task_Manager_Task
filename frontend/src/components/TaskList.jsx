@@ -19,6 +19,29 @@ function TaskList() {
   const [currentTaskId, setCurrentTaskId] = useState(null);
   const token = localStorage.getItem("token");
 
+  const items = []; // for getting the id of select type
+
+  const handleDelete = async () => {
+    console.log("Selected items to delete:", items);
+  
+    try {
+      const deletePromises = items.map((item) =>
+        axios.delete(`${config.endpoint}/tasks/${item}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      );
+  
+      await Promise.all(deletePromises); 
+      console.log("All selected tasks deleted successfully");
+  
+      getTasks(); 
+    } catch (err) {
+      console.error("Error deleting tasks:", err);
+    }
+  };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTask({ ...task, [name]: value });
@@ -65,12 +88,9 @@ function TaskList() {
         console.log("Task successfully added:", response.data);
       }
 
-      // const modalElement = document.getElementById("taskModal");
-      // const modal = new window.bootstrap.Modal(modalElement);
-      // modal.hide();
       const modalElement = document.getElementById("taskModal");
-      const modal = bootstrap.Modal.getInstance(modalElement);
-      if (modal) modal.hide();
+      const modal = new window.bootstrap.Modal(modalElement);
+      modal.hide();
 
       setTask({
         title: "",
@@ -125,7 +145,7 @@ function TaskList() {
       >
         + Add task
       </button>
-      <button className="btn btn-danger ms-2">Delete selected</button>
+      <button className="btn btn-danger ms-2" onClick = {handleDelete}>Delete selected</button>
 
       {/* Modal */}
       <div
@@ -237,7 +257,7 @@ function TaskList() {
       <br />
 
       <div>
-        <TaskTable tasks={tasks} onEditTask={openEditModal} />
+        <TaskTable tasks={tasks} onEditTask={openEditModal} items = {items}/>
       </div>
     </>
   );
