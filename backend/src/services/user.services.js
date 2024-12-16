@@ -28,7 +28,7 @@ const registerUser = async(email, password, confirmPassword) => {
 }
 
 const loginUser = async(email, password) => {
-    const user = await User.find({email});
+    const user = await User.findOne({email});
     if(!user){
         const error = new Error('Invalid credentials');
         error.status = 400;

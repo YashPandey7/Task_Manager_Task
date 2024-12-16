@@ -5,9 +5,9 @@ const findTask = async() => {
     return task;
 }
 
-const createsTask = async(req, res) => {
+const createsTask = async(body) => {
     const task = new Task(body);
-    const savedTask = await Task.save();
+    const savedTask = await task.save();
     return savedTask;
 }
 
