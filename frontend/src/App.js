@@ -4,6 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import TaskList from './components/TaskList';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 
 function App() {
   return (
