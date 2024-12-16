@@ -11,7 +11,7 @@ require('dotenv').config();
 const Mongo_URL = process.env.MONGODB_URL;
 const PORT = process.env.PORT || 10000;
 
-mongoose.connect(Mongo_URL)
+mongoose.connect(Mongo_URL) 
 .then(() => {
     console.log("MongoDB connected successfully");
 }).catch((err) => {
