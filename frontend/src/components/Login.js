@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import config from "../config";
-import {Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
+import "./Login.css"; // Import CSS file
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -12,10 +13,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestBody = {
-      email,
-      password
-    };
+    const requestBody = { email, password };
 
     try {
       const response = await axios.post(`${config.endpoint}/users/login`, requestBody);
@@ -38,27 +36,34 @@ function Login() {
 
   return (
     <>
-    <Header/>
-
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          value={email}
-          placeholder="Email..."
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        /><br/><br/>
-        <input
-          type="password"
-          value={password}
-          placeholder="Password..."
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        /><br/><br/>
-        <button type="submit">Login</button>
-        <p>Don't have an account? <Link to="/">Register</Link></p>
-      </form>
+      <Header />
+      <div className="login-container">
+        <h1 className="login-heading">Welcome to To-do app</h1>
+        <form onSubmit={handleSubmit} className="login-form">
+          <input
+            type="email"
+            value={email}
+            placeholder="email ID"
+            onChange={(e) => setEmail(e.target.value)}
+            className="login-input"
+            required
+          />
+          <input
+            type="password"
+            value={password}
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+            className="login-input"
+            required
+          />
+          <button type="submit" className="login-button">
+            Sign in to continue
+          </button>
+        </form>
+        <p className="login-footer">
+          Don't have an account? <Link to="/">Register</Link>
+        </p>
+      </div>
     </>
   );
 }

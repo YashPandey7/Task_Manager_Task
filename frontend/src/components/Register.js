@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../config";
 import Header from "./Header";
+import "./Register.css"; 
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -36,33 +37,42 @@ function Register() {
 
   return (
     <>
-    <Header/>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          value={email}
-          placeholder="Email..."
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        /><br/><br/>
-        <input
-          type="password"
-          value={password}
-          placeholder="Password..."
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        /><br/><br/>
-        <input
-          type="password"
-          value={confirmPassword}
-          placeholder="Confirm Password..."
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        /><br/><br/>
-        <button type="submit">Register</button>
-        <p>Already have an account? <Link to="/login">Login</Link></p>
-      </form>
+      <Header />
+      <div className="register-container">
+        <h1 className="register-heading">Welcome to To-do app</h1>
+        <form onSubmit={handleSubmit} className="register-form">
+          <input
+            type="email"
+            value={email}
+            placeholder="email ID"
+            onChange={(e) => setEmail(e.target.value)}
+            className="register-input"
+            required
+          />
+          <input
+            type="password"
+            value={password}
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+            className="register-input"
+            required
+          />
+          <input
+            type="password"
+            value={confirmPassword}
+            placeholder="confirm password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="register-input"
+            required
+          />
+          <button type="submit" className="register-button">
+            Sign Up
+          </button>
+        </form>
+        <p className="register-footer">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
+      </div>
     </>
   );
 }
